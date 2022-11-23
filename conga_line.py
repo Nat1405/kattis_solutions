@@ -141,8 +141,8 @@ class CongaLine:
     def yell_partners_name(self):
         """Get the mic holder to yell partners name"""
         #print("yell partners name")
-        print(
-            self.lineup[self.mic_holder_index()].partner.name)
+        sys.stdout.write(
+            self.lineup[self.mic_holder_index()].partner.name + '\n')
 
 
     def mic_holder_index(self):
@@ -172,8 +172,8 @@ if __name__ == "__main__":
 
     conga_line.get_line_moving()
     
-    print()
+    sys.stdout.write('\n')
     for d in conga_line.lineup:
-        print(d.name)
+        sys.stdout.write(d.name + '\n')
 
     
