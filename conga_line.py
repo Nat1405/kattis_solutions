@@ -1,5 +1,10 @@
 import sys
 
+
+# Buffer stdout in a list like this to see if it's any faster
+my_stdout = []
+
+
 class CongaLine:
     def __init__(self):
         self.lineup = []
@@ -141,7 +146,7 @@ class CongaLine:
     def yell_partners_name(self):
         """Get the mic holder to yell partners name"""
         #print("yell partners name")
-        sys.stdout.write(
+        my_stdout.append(
             self.lineup[self.mic_holder_index()].partner.name + '\n')
 
 
@@ -172,8 +177,12 @@ if __name__ == "__main__":
 
     conga_line.get_line_moving()
     
-    sys.stdout.write('\n')
+    my_stdout.append('\n')
     for d in conga_line.lineup:
-        sys.stdout.write(d.name + '\n')
+        my_stdout.append(d.name + '\n')
+
+    # Now print everything in buffer
+    for b in my_stdout:
+        sys.stdout.write(b)
 
     
