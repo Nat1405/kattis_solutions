@@ -1,23 +1,49 @@
 import random
+import sys
+import itertools
 
-def MR(n):
-    """Implementation of the Miller-Rabin primality test. Given n:
-
-        1) Compute s, d such that n-1 = (2^s)*d, (d%2)!= 0.
-        2) Pick random b such that b is in [1, n-1]
-        3) Computer (b^d % n), (b^(2^1)*d % n), ... (b^(2^s-1)*d % n)
-            - Can be computed by repeatedly squaring previous result
-              and taking remainder modulo n
-        4) If any of those s numbers n-1, return n is prime. Else False.
-
-    Main takaway: whenever this algo says n is not prime, it is correct.
-    Only return that it is prime if over many runs it says prime.
+def MR(n, k):
+    """Implementation of the Miller-Rabin primality test.
+        Inputs:
+            - integer n, we will ensure it is greater than two and odd.
+            - integer k, number rounds of testing to perform
+        
+        Pseudocode from 
+    https://en.wikipedia.org/wiki/Miller–Rabin_primality_test#Example.
     
-    Pretty cool, very simple algorithm to have such profound results!
+    Returns False if definitely composite, True if probably prime.
     """
-    if n == 1 or (n % 2 == 0):
-        return False
 
+    # First test to ensure n > 2 and n odd
+    if n == 1:
+        return False
+    if n == 2:
+        return True
+    if (n % 2 == 0):
+        return False
+    if n == 3:
+        return True
+
+    # Now find s and d
+    s, d = get_s_d(n)
+    
+    #print(f"N:\n{n}\nn-1 = (2**{s})*{d}")
+    
+    for _ in range(k):
+        b = random.randint(2, n-2)
+        #print(f"B: {b}")
+        x = pow(b, d, n)
+        for _ in range(s):
+            y = pow(x, 2, n)
+            if y == 1 and x != 1 and (x != n-1):
+                return False
+            x = y
+        if y != 1:
+            return False
+
+    return True
+
+def get_s_d(n):
     n_m_1 = n-1
     s = 0
     old_d = n_m_1
@@ -31,30 +57,32 @@ def MR(n):
         s += 1
         old_d = d
         old_r = r
-    
-    print(f"N:\n{n}\nn-1 = (2**{s})*{old_d}")
-    
-    b = random.randint(1, n_m_1)
 
-    print(f"B: {b}")
-
-    # I am assuming s can't be 0, since we check if n is even
-    nums = []
-    
-    acc = pow(b, old_d, n)
-
-    nums.append(acc)
-    for _ in range(s-1):
-        acc = pow(acc, 2, n)
-        nums.append(acc)
-
-    results = [(x == n - 1) for x in nums]
-
-    for num, result in zip(nums, results):
-        print(f"{num}\n{result}")
-    
-    return any(results)
+    return s, old_d
 
 
 if __name__ == "__main__":
-    MR(35201546659608842026088328007565866231962578784643756647773109869245232364730066609837018108561065242031153677)
+    num_tests = int(sys.stdin.readline().rstrip('\n'))
+    for i in range(num_tests):
+        line = sys.stdin.readline()
+        # Convert line to list of possible integers
+        line = list(line.rstrip('\n'))
+
+        subsets = []
+        for i in range(1, len(line)+1):
+            subsets.extend(itertools.permutations(line, r=i))
+
+        possible_ints = [int(''.join(e)) for e in subsets]
+        
+        # Strip out duplicates
+        possible_ints = list(set(possible_ints))
+        
+        #print(len(possible_ints))
+
+        num_primes = 0
+        for e in possible_ints:
+            if MR(e, 20):
+                num_primes += 1
+
+        print(f"{num_primes}")
+
