@@ -179,7 +179,7 @@ if __name__ == "__main__":
         line = line.rstrip('\n')
         line = line.replace(' ', '') # Strip whitespace
         # Unary negation gets seperate character
-        line = re.sub(r"^-|-(?<=--|\+-|\*-|\/-)", 'm', line)
+        line = re.sub(r"^-|-(?<=--|\+-|\*-|\/-|\(-)", 'm', line)
 
         token_list = re.findall(r"\+|-|\*|\/|m|\(|\)|[0-9]+", line)
 
