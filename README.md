@@ -1,11 +1,8 @@
 # Kattis Solutions
 
-Here are my solutions to various kattis problems.
+Here are my solutions to various kattis problems. Most of them are in Python. See individual commits for notes on each problem, challenges, and things that worked well. My goal has been to obtain a Kattis score of either 50 or 100 (I am https://open.kattis.com/users/nat1405) through non-trivial problems; to add structure, I have been using the 2020 edition of Principles of Algorithmic Problem Solving (eg, https://www.csc.kth.se/~jsannemo/slask/main.pdf) as a guide.
 
+Feel free to study these solutions, and please reach out with any comments or suggestions!
 
-## Conga Line
-
-I REALLY wanted to use this as an opportunity to practice test cases. Lots of features of the python language make it clear to express code. For testing, you could create an abstract representation (interface) of a line before one of the five operations, then a similar abstract representation of the line AFTER the instruction (and similarly represent expected output abstractly). The result being, you have a handler to ensure correctness (via test cases) and benchmark performance (again via test cases), regardless of implementation. You get correctness, and benchmarkability, and you can maintain your own code a little better because it makes sense. 
-
-But anywho, I need to leetcode rather than do things the right way.
+~ Nat
 
